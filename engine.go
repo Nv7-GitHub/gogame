@@ -42,7 +42,7 @@ func (e *Engine) Start(title string, fps int32) {
 
 		rl.BeginDrawing()
 
-		rl.ClearBackground(e.Bg.color)
+		rl.ClearBackground(e.Bg.Color)
 
 		for _, c := range e.Components {
 			c.Draw()

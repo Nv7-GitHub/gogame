@@ -11,9 +11,9 @@ type Component interface {
 
 // Color is the datatype for colors in gogame
 type Color struct {
-	r     uint8
-	g     uint8
-	b     uint8
-	a     uint8
-	color rl.Color
+	R     uint8
+	G     uint8
+	B     uint8
+	A     uint8
+	Color rl.Color
 }

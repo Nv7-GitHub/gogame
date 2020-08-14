@@ -1,6 +1,8 @@
 package gogame
 
-import rl "github.com/gen2brain/raylib-go/raylib"
+import (
+	rl "github.com/gen2brain/raylib-go/raylib"
+)
 
 // Circle is a circle, it draws a circle to the screen
 type Circle struct {
@@ -17,7 +19,7 @@ func (c *Circle) Load() {
 
 // Draw is for drawing rect
 func (c *Circle) Draw() {
-	rl.DrawCircle(c.X, c.Y, c.Radius, c.Color.color)
+	rl.DrawCircle(c.X, c.Y, c.Radius, c.Color.Color)
 }
 
 // Unload is for taking things from disk out of RAM, doesnt apply to rect

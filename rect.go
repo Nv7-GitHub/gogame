@@ -1,6 +1,8 @@
 package gogame
 
-import rl "github.com/gen2brain/raylib-go/raylib"
+import (
+	rl "github.com/gen2brain/raylib-go/raylib"
+)
 
 // Rect is a rectangle, it draws a rectangle to the screen
 type Rect struct {
@@ -18,7 +20,7 @@ func (r *Rect) Load() {
 
 // Draw is for drawing rect
 func (r *Rect) Draw() {
-	rl.DrawRectangle(r.X, r.Y, r.Width, r.Height, r.Color.color)
+	rl.DrawRectangle(r.X, r.Y, r.Width, r.Height, r.Color.Color)
 }
 
 // Unload is for taking things from disk out of RAM, doesnt apply to rect
