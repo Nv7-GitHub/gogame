@@ -2,15 +2,6 @@ package gogame
 
 import rl "github.com/gen2brain/raylib-go/raylib"
 
-// Color is the datatype for colors in gogame
-type Color struct {
-	r     uint8
-	g     uint8
-	b     uint8
-	a     uint8
-	color rl.Color
-}
-
 // Engine is for the main engine
 type Engine struct {
 	WIDTH      int32
