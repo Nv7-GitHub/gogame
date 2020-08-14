@@ -28,8 +28,8 @@ func (i *Input) Update() {
 	i.RightMouseDown = rl.IsMouseButtonDown(rl.MouseRightButton)
 }
 
-// KeyDown to check if key is pressed
-func (i *Input) KeyDown(key int32) bool {
+// IsKeyDown to check if key is pressed
+func (i *Input) IsKeyDown(key int32) bool {
 	return rl.IsKeyDown(key)
 }
 
