@@ -9,6 +9,28 @@ type Engine struct {
 	tick       func(delta float32)
 	Bg         Color
 	Components []Component
+	Input      Input
+}
+
+// Input detects user input
+type Input struct {
+	MouseX         int32
+	MouseY         int32
+	LeftMouseDown  bool
+	RightMouseDown bool
+}
+
+// Update updates input
+func (i *Input) Update() {
+	i.MouseX = rl.GetMouseX()
+	i.MouseY = rl.GetMouseY()
+	i.LeftMouseDown = rl.IsMouseButtonDown(rl.MouseLeftButton)
+	i.RightMouseDown = rl.IsMouseButtonDown(rl.MouseRightButton)
+}
+
+// KeyDown to check if key is pressed
+func (i *Input) KeyDown(key int32) bool {
+	return rl.IsKeyDown(key)
 }
 
 // NewColor is for creating a color
@@ -18,7 +40,7 @@ func NewColor(r, g, b, a uint8) Color {
 
 // NewEngine creates an engine object with parameters
 func NewEngine(width, height int32, tick func(delta float32)) Engine {
-	return Engine{width, height, tick, NewColor(0, 0, 0, 1), make([]Component, 0)}
+	return Engine{width, height, tick, NewColor(0, 0, 0, 1), make([]Component, 0), Input{0, 0, false, false}}
 }
 
 // AddComponent adds a component to the engine
@@ -31,14 +53,12 @@ func (e *Engine) Start(title string, fps int32) {
 	rl.InitWindow(e.WIDTH, e.HEIGHT, title)
 	rl.SetTargetFPS(fps)
 
-	oldTime := rl.GetTime()
-
 	for _, c := range e.Components {
 		c.Load()
 	}
 
 	for !rl.WindowShouldClose() {
-		e.tick(rl.GetTime() - oldTime)
+		e.tick(1 / rl.GetFPS())
 
 		rl.BeginDrawing()
 
@@ -49,8 +69,6 @@ func (e *Engine) Start(title string, fps int32) {
 		}
 
 		rl.EndDrawing()
-
-		oldTime = rl.GetTime()
 	}
 
 	for _, c := range e.Components {
