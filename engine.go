@@ -58,7 +58,7 @@ func (e *Engine) Start(title string, fps int32) {
 	}
 
 	for !rl.WindowShouldClose() {
-		e.tick(1 / rl.GetFPS())
+		e.tick(rl.GetFrameTime())
 
 		rl.BeginDrawing()
 

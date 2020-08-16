@@ -40,6 +40,12 @@ func (r *Rect) Translate(changeX, changeY int32) {
 	r.Y += changeY
 }
 
+// Resize is for resizing a rectangle a certain amount
+func (r *Rect) Resize(width, height int32) {
+	r.Width = width
+	r.Height = height
+}
+
 // NewRect creates a rect with the parameters
 func NewRect(x, y, width, height int32, color Color) *Rect {
 	return &Rect{x, y, width, height, color}
@@ -87,18 +93,23 @@ func NewCircle(x, y int32, radius float32, color Color) *Circle {
 
 // Image is a image, it draws an image to the screen
 type Image struct {
-	X     int32
-	Y     int32
-	Path  string
-	tex   rl.Texture2D
-	color rl.Color
-	image *rl.Image
+	X      int32
+	Y      int32
+	Width  int32
+	Height int32
+	Path   string
+	tex    rl.Texture2D
+	color  rl.Color
+	image  rl.Image
 }
 
 // Load function is called on initialization, but is mostly for things that read from disk
 func (i *Image) Load() {
-	i.image = rl.LoadImage(i.Path)
-	i.tex = rl.LoadTextureFromImage(i.image)
+	i.image = *rl.LoadImage(i.Path)
+	newimg := rl.ImageCopy(&i.image)
+	rl.ImageResize(newimg, i.Width, i.Height)
+	i.tex = rl.LoadTextureFromImage(newimg)
+	go rl.UnloadImage(newimg)
 }
 
 // Draw is for drawing oval
@@ -108,13 +119,17 @@ func (i *Image) Draw() {
 
 // Unload is for taking things from disk out of RAM, doesnt apply to rect
 func (i *Image) Unload() {
-	rl.UnloadImage(i.image)
+	rl.UnloadImage(&i.image)
 }
 
 // Resize is for resizing an image
 func (i *Image) Resize(width, height int32) {
-	rl.ImageResize(i.image, width, height)
-	i.tex = rl.LoadTextureFromImage(i.image)
+	newimg := rl.ImageCopy(&i.image)
+	rl.ImageResize(newimg, i.Width, i.Height)
+	i.Width = width
+	i.Height = height
+	i.tex = rl.LoadTextureFromImage(newimg)
+	go rl.UnloadImage(newimg)
 }
 
 // Move is for moving a rectangle to a specific point
@@ -131,7 +146,7 @@ func (i *Image) Translate(changeX, changeY int32) {
 
 // NewImage creates a rect with the parameters
 func NewImage(x, y, width, height int32, path string) *Image {
-	var img *rl.Image
-	var tex *rl.Texture2D
-	return &Image{x, y, path, *tex, rl.RayWhite, img}
+	var img rl.Image
+	var tex rl.Texture2D
+	return &Image{x, y, width, height, path, tex, rl.RayWhite, img}
 }
